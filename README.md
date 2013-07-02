@@ -1,3 +1,3 @@
 FW
 =======
-Framework para MCV em php.
+Framework para MVC em php.
