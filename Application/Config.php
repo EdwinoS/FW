@@ -6,5 +6,11 @@ return array(
         'Controller1',
         'controller2',
         'controller3'
+    ),
+    'view' => array(
+        'documentType' => 'HTML',
+        'encode' => 'UTF8',
+        'defaultTitle' => '',
+        'layoutModel' => 'View/Layout.phtml'
     )
 );
