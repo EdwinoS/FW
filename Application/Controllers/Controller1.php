@@ -8,7 +8,7 @@ class Controller1 extends AbstractController {
         return 'controller 1';
     }
     public function test(){
-        return 'metodo teste';
+        return 'o meu coração viu a luz do dia';
     }
 }
 

@@ -1,0 +1,7 @@
+{
+    "404": "Controller não foi encontrado ou registrado",
+    "405": "Action não existe",
+    "403": "Acesso negado",
+    "400": "Requisição invalida",
+    "500": "Erro interno do servidor"
+}

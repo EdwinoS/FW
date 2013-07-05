@@ -3,6 +3,9 @@
 namespace FW;
 use FW\MVC\View\Template;
 use FW\Interfaces\GlobalInterface;
+use FW\Interfaces\ExceptionsInterface;
+use FW\Exceptions\AbstractExceptions;
+
 class Application implements GlobalInterface{
 
     protected   $controllers,
@@ -27,11 +30,17 @@ class Application implements GlobalInterface{
                 $view->getView();
             }
                 
-            else
-                echo 'Açao não existe';
+            else{
+                $exception = new AbstractExceptions(ExceptionsInterface::ACTIONNOTFOUND);
+                echo 'Um erro aconteceu:<br>Codigo do erro: '.$exception->getCode().'<br>';
+                echo 'Menssagem: '.$exception->getMessage();
+            }
         }
-        else
-            echo 'Erro 404';
+        else{
+            $exception = new AbstractExceptions(ExceptionsInterface::CONTROLLERNOTFOUND);
+            echo 'Um erro aconteceu:<br>Codigo do erro: '.$exception->getCode().'<br>';
+            echo 'Menssagem: '.$exception->getMessage();
+        }
     }
 
     protected function initController() {
