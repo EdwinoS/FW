@@ -5,13 +5,14 @@ use FW\MVC\View\Template;
 use FW\Interfaces\GlobalInterface;
 use FW\Interfaces\ExceptionsInterface;
 use FW\Exceptions\AbstractExceptions;
+use FW\Util\Route;
 
 class Application implements GlobalInterface{
 
     protected   $controllers,
                 $default,
                 $appName,
-                $URL,
+                $route,
                 $viewConfig,
                 $exception = 0;
 
@@ -20,19 +21,18 @@ class Application implements GlobalInterface{
         $this->appName = $config['appName'];
         $this->controllers = $config['controllers'];
         $this->default = $config['default'];
-        $this->URL = explode('/', $_SERVER['REQUEST_URI']);
+        $this->route = new Route();
         $this->viewConfig = $config['view'];
     }
 
     public function load() {
         $action = null;
-        if (empty($this->URL[1])) {
+        if ($this->route->controllerIsNull()) {
             if($controller = $this->loadDefault())
                 $action = $this->getAction ($this->default['action'], $controller->getDefaultAction());
         }
         elseif (($controller = $this->loadController())) {
-            //fixme, tira esse '@' que esconde o warnning
-            @$action = $this->getAction ($this->URL[2], $controller->getDefaultAction());
+            $action = $this->getAction ($this->route->getAction(), $controller->getDefaultAction());
         }
         
         if($this->isAction($controller, $action)){
@@ -50,7 +50,12 @@ class Application implements GlobalInterface{
             $view->getView();
         }
     }
-
+    
+    /**
+     * Cria uma instancia de Controller
+     * @param String $controller
+     * @return \FW\MVC\Controller|boolean
+     */
     protected function initController($controller) {
         if (file_exists($this::CONTROLLERS_ROOT.$controller.'.php')) {
             $obj = '\\'.$this->appName.'\\Controllers\\'.$controller;
@@ -60,6 +65,13 @@ class Application implements GlobalInterface{
         return FALSE;
     }
     
+    /**
+     * Verifica se $action existe no $controller
+     * @param \FW\MVC\Controller $controller
+     * @param string $action
+     * @return boolean
+     */
+    
     protected function isAction($controller, $action){
         if(is_object($controller)){
             if (method_exists($controller, $action)) return TRUE;
@@ -67,6 +79,10 @@ class Application implements GlobalInterface{
             return FALSE;
         }
     }
+    /**
+     * Seta controller padrão definidos em \Application\Config
+     * @return string|boolean
+     */
 
     protected function loadDefault(){
         if($controller = $this->initController(ucfirst($this->default['controller']))) return $controller;
@@ -74,15 +90,27 @@ class Application implements GlobalInterface{
         return FALSE;
     }
     
+    /**
+     * Seta controller passados por \FW\Util\Route 
+     * @return string|boolean
+     */
+    
     protected function loadController(){
         foreach ($this->controllers as $controller) {
-            if (($controller = ucfirst($controller)) == ucfirst($this->URL[1])) {
+            if (($controller = ucfirst($controller)) == ucfirst($this->route->getController())) {
                 if($controller = $this->initController($controller)) return $controller;
             }
         }
         $this->exception = ExceptionsInterface::CONTROLLERNOTFOUND;
         return FALSE;
     }
+    
+    /**
+     * Retorna o nome da action a ser executada
+     * @param string $action
+     * @param string $default
+     * @return string
+     */
     
     protected function getAction($action, $default){
         return (!empty($action)) ? $action : $default;
