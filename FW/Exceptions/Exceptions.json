@@ -3,5 +3,7 @@
     "405": "Action não existe",
     "403": "Acesso negado",
     "400": "Requisição invalida",
-    "500": "Erro interno do servidor"
+    "500": "Erro interno do servidor",
+    "304": "O arquivo da view da action não foi encontrado.",
+    "305": "Uma ViewModel era esperada, porém não foi retornada pelo controller."
 }

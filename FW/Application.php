@@ -4,7 +4,7 @@ namespace FW;
 use FW\MVC\View\Template;
 use FW\Interfaces\GlobalInterface;
 use FW\Interfaces\ExceptionsInterface;
-use FW\Exceptions\AbstractExceptions;
+use FW\Exceptions\Exceptions;
 use FW\Util\Route;
 
 class Application implements GlobalInterface{
@@ -12,9 +12,11 @@ class Application implements GlobalInterface{
     protected   $controllers,
                 $default,
                 $appName,
+                $controllerName,
                 $route,
                 $viewConfig,
                 $exception = 0;
+    
 
     public function __construct() {
         $config = require $this::APPROOT.'Config.php';
@@ -36,18 +38,23 @@ class Application implements GlobalInterface{
         }
         
         if($this->isAction($controller, $action)){
-            $controller->$action();
+            $view = $controller->$action();
+            if($view instanceof \FW\MVC\View\ViewModel){
+                $view->setView($this::VIEW_ROOT.$this->controllerName.'/'.$action.'.phtml');
+                $this->exception = $view->getException();
+            }
+            else
+                $this->exception = ExceptionsInterface::VIEWNOTSETED;
         }
         
         if($this->exception > 0){
-            $exception = new AbstractExceptions($this->exception);
+            $exception = new Exceptions($this->exception);
             echo 'Um erro aconteceu:<br>Codigo do erro: '.$exception->getCode().'<br>';
             echo 'Menssagem: '.$exception->getMessage();
         }
         else{
-            echo 'Controller foi carregado ' . $controller->$action();
-            $view = new Template($this->viewConfig);
-            $view->getView();
+            $view = new Template($this->viewConfig, $view);
+            $view->getTemplate();
         }
     }
     
@@ -58,6 +65,7 @@ class Application implements GlobalInterface{
      */
     protected function initController($controller) {
         if (file_exists($this::CONTROLLERS_ROOT.$controller.'.php')) {
+            $this->controllerName = strtolower($controller);
             $obj = '\\'.$this->appName.'\\Controllers\\'.$controller;
             require_once $this::CONTROLLERS_ROOT.$controller.'.php';
             return new $obj();

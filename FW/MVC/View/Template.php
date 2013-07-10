@@ -2,18 +2,20 @@
 namespace FW\MVC\View;
 use FW\Interfaces\GlobalInterface;
 class Template implements GlobalInterface{
-    protected   $docmentType,
+    private $docmentType,
                 $encode ,
                 $title,
-                $layoutModel;
-    public function __construct($config) {
+                $layoutModel,
+                $view;
+    public function __construct($config, $view) {
         $this->layoutModel = $this::APPROOT.$config['layoutModel'];
         $this->setDocmentType(strtoupper($config['documentType']));
         $this->setEncode(strtoupper($config['encode']), strtolower($config['documentType']));
         $this->setTitle($config['defaultTitle']);
+        $this->view = $view;
     }
 
-    public function getView(){
+    public function getTemplate(){
         include ($this->layoutModel);
     }
     public function getDocmentType() {
@@ -42,6 +44,11 @@ class Template implements GlobalInterface{
 
     public function setTitle($title) {
         $this->title = '<title>'.$title.'</title>'.$this::EOL;
+    }
+    
+    public function getView(){
+         $this->view->getView();
+         echo $this::EOL;
     }
 }
 

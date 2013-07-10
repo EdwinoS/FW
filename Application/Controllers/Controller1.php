@@ -2,13 +2,14 @@
 namespace Showdown\Controllers;
 
 use \FW\MVC\Controller\AbstractController;
+use FW\MVC\View\ViewModel;
 
 class Controller1 extends AbstractController {
     public function index(){
-        return 'controller 1';
+        return new ViewModel(array('teste' => 'xd'));
     }
     public function test(){
-        return 'o meu coração viu a luz do dia';
+        return new ViewModel(array('teste' => 'xd'));
     }
 }
 

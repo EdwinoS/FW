@@ -3,7 +3,7 @@ namespace FW\Exceptions;
 
 use FW\Interfaces\GlobalInterface;
 
-class AbstractExceptions implements GlobalInterface {
+class Exceptions implements GlobalInterface {
     protected $exceptionCode,
               $Messages;
     

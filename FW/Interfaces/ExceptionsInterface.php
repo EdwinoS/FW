@@ -18,6 +18,8 @@ interface ExceptionsInterface extends GlobalInterface{
     
     
     //views
+    const VIEWNOTFOUND = 304;
+    const VIEWNOTSETED = 305;
 }
 
 ?>
