@@ -6,8 +6,10 @@ class Template implements GlobalInterface{
                 $encode ,
                 $title,
                 $layoutModel,
-                $view;
-    public function __construct($config, $view) {
+                $view,
+                $variables;
+    public function __construct($config, $view, $variables) {
+        $this->variables = $variables;
         $this->layoutModel = $this::APPROOT.$config['layoutModel'];
         $this->setDocmentType(strtoupper($config['documentType']));
         $this->setEncode(strtoupper($config['encode']), strtolower($config['documentType']));
@@ -42,13 +44,18 @@ class Template implements GlobalInterface{
         return $this->title;
     }
 
-    public function setTitle($title) {
-        $this->title = '<title>'.$title.'</title>'.$this::EOL;
+    public function setTitle($defaultTitle) {
+        $this->title = '<title>'.
+                       ((isset($this->variables['title'])) ? $this->variables['title'] : $defaultTitle)
+                       .'</title>'.$this::EOL;
     }
     
     public function getView(){
          $this->view->getView();
          echo $this::EOL;
+    }
+    public function getVariable($variable){
+        return (isset($this->variables[$variable])) ? $this->variables[$variable] : NULL ;
     }
 }
 

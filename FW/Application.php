@@ -42,6 +42,8 @@ class Application implements GlobalInterface{
             if($view instanceof \FW\MVC\View\ViewModel){
                 $view->setView($this::VIEW_ROOT.$this->controllerName.'/'.$action.'.phtml');
                 $this->exception = $view->getException();
+                
+                $templateVariables = $controller->getTemplateVariable();
             }
             else
                 $this->exception = ExceptionsInterface::VIEWNOTSETED;
@@ -53,7 +55,7 @@ class Application implements GlobalInterface{
             echo 'Menssagem: '.$exception->getMessage();
         }
         else{
-            $view = new Template($this->viewConfig, $view);
+            $view = new Template($this->viewConfig, $view, $templateVariables);
             $view->getTemplate();
         }
     }
