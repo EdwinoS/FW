@@ -1,9 +1,9 @@
 {
-    "404": "Controller não foi encontrado ou registrado",
-    "405": "Action não existe",
-    "403": "Acesso negado",
-    "400": "Requisição invalida",
-    "500": "Erro interno do servidor",
-    "304": "O arquivo da view da action não foi encontrado.",
-    "305": "Uma ViewModel era esperada, porém não foi retornada pelo controller."
+    "404": "O Controller '%' não foi encontrado ou registrado.",
+    "405": "A Action '%' não existe.",
+    "403": "Acesso negado.",
+    "400": "Requisição invalida.",
+    "500": "Erro interno do servidor.",
+    "304": "O arquivo de view não foi encontrado em '%'.",
+    "305": "Uma instancia de '%' era esperada, porém não foi retornada pela Action '%' do Controller '%'."
 }

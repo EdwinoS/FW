@@ -6,6 +6,7 @@ use FW\Interfaces\GlobalInterface;
 use FW\Interfaces\ExceptionsInterface;
 use FW\Exceptions\Exceptions;
 use FW\Util\Route;
+use FW\MVC\View\ViewModel;
 
 class Application implements GlobalInterface{
 
@@ -15,7 +16,7 @@ class Application implements GlobalInterface{
                 $controllerName,
                 $route,
                 $viewConfig,
-                $exception = 0;
+                $exception;
     
 
     public function __construct() {
@@ -28,6 +29,7 @@ class Application implements GlobalInterface{
     }
 
     public function load() {
+        $this->exception['code'] = 0;
         $action = null;
         if ($this->route->controllerIsNull()) {
             if($controller = $this->loadDefault())
@@ -46,19 +48,25 @@ class Application implements GlobalInterface{
                 
                 $templateVariables = $controller->getTemplateVariable();
             }
-            else
-                $this->exception = ExceptionsInterface::VIEWNOTSETED;
+            else{
+                $this->exception['code'] = ExceptionsInterface::VIEWNOTSETED;
+                $this->exception['items'][0] = 'FW\\MVC\\View\\ViewModel';
+                $this->exception['items'][1] = $action;
+                $this->exception['items'][2] = ucfirst($this->controllerName);
+            }
         }
         
-        if($this->exception > 0){
+        if($this->exception['code'] > 0){
             $exception = new Exceptions($this->exception);
-            echo 'Um erro aconteceu:<br>Codigo do erro: '.$exception->getCode().'<br>';
-            echo 'Menssagem: '.$exception->getMessage();
+            $view = new ViewModel(array(
+                'code' => $exception->getCode(),
+                'message' => $exception->getMessage()
+            ));
+            $view->setView('../FW/Exceptions/view.phtml');
+            $templateVariables['title'] = 'Um erro ocorreu';
         }
-        else{
-            $view = new Template($this->viewConfig, $view, $templateVariables);
-            $view->getTemplate();
-        }
+        $view = new Template($this->viewConfig, $view, $templateVariables);
+        $view->getTemplate();
     }
     
     /**
@@ -88,7 +96,8 @@ class Application implements GlobalInterface{
     protected function isAction($controller, $action){
         if(is_object($controller)){
             if (method_exists($controller, $action.'Action')) return TRUE;
-            $this->exception = ExceptionsInterface::ACTIONNOTFOUND;
+            $this->exception['code'] = ExceptionsInterface::ACTIONNOTFOUND;
+            $this->exception['items'][0] = $action;
             return FALSE;
         }
     }
@@ -99,7 +108,8 @@ class Application implements GlobalInterface{
 
     protected function loadDefault(){
         if($controller = $this->initController(ucfirst($this->default['controller']))) return $controller;
-        $this->exception = ExceptionsInterface::CONTROLLERNOTFOUND;
+        $this->exception['code'] = ExceptionsInterface::CONTROLLERNOTFOUND;
+        $this->exception['items'][0] = ucfirst($this->default['controller']);
         return FALSE;
     }
     
@@ -114,7 +124,8 @@ class Application implements GlobalInterface{
                 if($controller = $this->initController($controller)) return $controller;
             }
         }
-        $this->exception = ExceptionsInterface::CONTROLLERNOTFOUND;
+        $this->exception['code'] = ExceptionsInterface::CONTROLLERNOTFOUND;
+        $this->exception['items'][0] = ucfirst($this->route->getController());
         return FALSE;
     }
     

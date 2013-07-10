@@ -5,11 +5,13 @@ use FW\Interfaces\GlobalInterface;
 
 class Exceptions implements GlobalInterface {
     protected $exceptionCode,
+              $items,
               $Messages;
     
     
     public function __construct($exception) {
-        $this->exceptionCode = $exception;
+        $this->exceptionCode = $exception['code'];
+        $this->items = $exception['items'];
         $this->getExceptionsMessages();
     }
     
@@ -18,7 +20,18 @@ class Exceptions implements GlobalInterface {
     }
 
     public function getMessage(){
-        return $this->Messages[$this->exceptionCode];
+        $message = null;
+        $count = 0;
+        $texts = explode('%',$this->Messages[$this->exceptionCode]);
+        foreach ($texts as $part){
+            $message .= $part;
+            if(isset($this->items[$count])){
+                $message .= '<b>'.$this->items[$count].'</b>';
+                $count++;
+            }
+        }
+        
+        return $message;
     }
     
     private function getExceptionsMessages(){
