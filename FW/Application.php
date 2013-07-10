@@ -31,14 +31,15 @@ class Application implements GlobalInterface{
         $action = null;
         if ($this->route->controllerIsNull()) {
             if($controller = $this->loadDefault())
-                $action = $this->getAction ($this->default['action'], $controller->getDefaultAction());
+                $action = $this->getAction ($this->default['action'], $controller->getDefaults());
         }
         elseif (($controller = $this->loadController())) {
-            $action = $this->getAction ($this->route->getAction(), $controller->getDefaultAction());
+            $action = $this->getAction ($this->route->getAction(), $controller->getDefaults());
         }
         
         if($this->isAction($controller, $action)){
-            $view = $controller->$action();
+            $method = $action.'Action';
+            $view = $controller->$method();
             if($view instanceof \FW\MVC\View\ViewModel){
                 $view->setView($this::VIEW_ROOT.$this->controllerName.'/'.$action.'.phtml');
                 $this->exception = $view->getException();
@@ -70,7 +71,9 @@ class Application implements GlobalInterface{
             $this->controllerName = strtolower($controller);
             $obj = '\\'.$this->appName.'\\Controllers\\'.$controller;
             require_once $this::CONTROLLERS_ROOT.$controller.'.php';
-            return new $obj();
+            $controller =  new $obj();
+            $controller->setControllerName(array('name' => $this->controllerName, 'space' => $obj));
+            return $controller;
         }
         return FALSE;
     }
@@ -84,7 +87,7 @@ class Application implements GlobalInterface{
     
     protected function isAction($controller, $action){
         if(is_object($controller)){
-            if (method_exists($controller, $action)) return TRUE;
+            if (method_exists($controller, $action.'Action')) return TRUE;
             $this->exception = ExceptionsInterface::ACTIONNOTFOUND;
             return FALSE;
         }
@@ -123,7 +126,7 @@ class Application implements GlobalInterface{
      */
     
     protected function getAction($action, $default){
-        return (!empty($action)) ? $action : $default;
+        return ((!empty($action)) ? $action : $default);
     }
 
 }
