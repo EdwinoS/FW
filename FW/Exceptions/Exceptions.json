@@ -1,9 +1,12 @@
 {
-    "404": "O Controller '%' não foi encontrado ou registrado.",
-    "405": "A Action '%' não existe.",
-    "403": "Acesso negado.",
     "400": "Requisição invalida.",
-    "500": "Erro interno do servidor.",
-    "304": "O arquivo de view não foi encontrado em '%'.",
-    "305": "Uma instancia de '%' era esperada, porém não foi retornada pela Action '%' do Controller '%'."
+    "403": "Acesso negado.",
+    "404": [
+            "Pagina não foi encontrada.",
+            "O Controller '%' não foi encontrado ou registrado.",
+            "A Action '%' não existe.",
+            "Impossível renderizar a página. O arquivo da view não foi encontrado em '%'.",
+            "Uma instancia de '%' era esperada, porém não foi retornada pela Action '%' do Controller '%'."
+    ],
+    "500": "Erro interno do servidor."
 }

@@ -6,20 +6,20 @@ use \FW\Interfaces\GlobalInterface;
 interface ExceptionsInterface extends GlobalInterface{
     
     //geral
-    const CONTROLLERNOTFOUND = 404;
-    const ACTIONNOTFOUND = 405;
+    const NOTFOUD = 404;
     const FORBIDDEN = 403;
     const BADREQUEST = 400;
     const INTERNALSERVERERROR = 500;
     
     
     //controllers
-    
+    const CONTROLLERNOTFOUND = '404-1';
+    const ACTIONNOTFOUND = '404-2';
     
     
     //views
-    const VIEWNOTFOUND = 304;
-    const VIEWNOTSETED = 305;
+    const VIEWNOTFOUND = '404-3';
+    const VIEWNOTSETED = '404-4';
 }
 
 ?>
