@@ -6,7 +6,8 @@
             "O Controller '%' não foi encontrado ou registrado.",
             "A Action '%' não existe.",
             "Impossível renderizar a página. O arquivo da view não foi encontrado em '%'.",
-            "Uma instancia de '%' era esperada, porém não foi retornada pela Action '%' do Controller '%'."
+            "Uma instancia de '%' era esperada, porém não foi retornada pela Action '%' do Controller '%'.",
+            "Impossível renderizar a página. O template não foi encontrado em '%'"
     ],
     "500": "Erro interno do servidor."
 }

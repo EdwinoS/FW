@@ -8,7 +8,8 @@ use FW\MVC\View\ViewModel;
 abstract class AbstractController {
     protected $defaultAction = 'index',
               $templatesVariables = array(),
-              $controllerName;
+              $controllerName,
+              $templateType = NULL;
     private $get, $post;
     public function indexAction(){
         return new ViewModel(array());
@@ -22,6 +23,15 @@ abstract class AbstractController {
     public function getTemplateVariable(){
         return $this->templatesVariables;
     }
+    
+    public function setTemplateType($templateType){
+        $this->templateType = $templateType;
+    }
+    
+    public function getTemplateType() {
+        return $this->templateType;
+    }
+    
     public function inputGet(){
         if(!$this->get) $this->get = new Get();
         return $this->get;

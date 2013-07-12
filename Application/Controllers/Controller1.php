@@ -6,10 +6,15 @@ use FW\MVC\View\ViewModel;
 
 class Controller1 extends AbstractController {
     public function indexAction(){
-        return new ViewModel(array('teste' => 'xd'));
+        $rtn = '<h1>Uma pagina em HTML</h1>';
+        return new ViewModel(array('teste' => $rtn));
     }
-    public function testAction(){
-        return new ViewModel(array('teste' => 'action de teste'));
+    public function jsonAction(){
+        $rtn = json_encode(array('Pagina' => 'JSON','teste'=> array('lala', 'hey apple')));
+        return new ViewModel(array('teste' => $rtn),'JSON');
+    }
+    public function xmlAction(){
+        return new ViewModel(array(),'XML');
     }
 }
 

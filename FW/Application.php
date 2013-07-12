@@ -55,13 +55,12 @@ class Application implements GlobalInterface{
                 $this->exception['items'][2] = ucfirst($this->controllerName);
             }
         }
-        
         if($this->exception['code'] > 0){
             $exception = new Exceptions($this->exception);
             $view = new ViewModel(array(
                 'code' => $exception->getCode(),
                 'message' => $exception->getMessage()
-            ));
+            ), 'HTML');
             $view->setView('../FW/Exceptions/view.phtml');
             $templateVariables['title'] = 'Um erro ocorreu';
         }

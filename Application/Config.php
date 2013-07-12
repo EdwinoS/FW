@@ -11,7 +11,7 @@ return array(
     'view' => array(
         'documentType' => 'HTML',
         'encode' => 'UTF8',
-        'defaultTitle' => 'Titulo Padão',
+        'defaultTitle' => 'Titulo Padrão',
         'layoutModel' => 'View/Layout.phtml'
     )
 );

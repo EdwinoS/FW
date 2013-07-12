@@ -8,11 +8,13 @@ use FW\Interfaces\ExceptionsInterface;
 class ViewModel implements GlobalInterface {
 
     private $view,
-            $exception;
+            $exception,
+            $type;
 
-    public function __construct(array $variables) {
+    public function __construct(array $variables, $type = NUll) {
         $this->setVariables($variables);
         $this->exception['code'] = 0;
+        $this->type = $type;
     }
 
     public function setView($view) {
@@ -41,7 +43,16 @@ class ViewModel implements GlobalInterface {
     public function getException() {
         return $this->exception;
     }
-
+    
+    public function getType() {
+        return $this->type;
+    }
+    public function setType($type) {
+        $this->type = $type;
+    }
+    public function getViewPath(){
+        return $this->view;
+    }
 }
 
 ?>
