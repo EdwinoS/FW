@@ -6,6 +6,7 @@ use FW\Interfaces\GlobalInterface;
 use FW\Interfaces\ExceptionsInterface;
 use FW\Exceptions\Exceptions;
 use FW\Util\Route;
+use FW\MVC\Controller\Services;
 use FW\MVC\View\ViewModel;
 
 class Application implements GlobalInterface{
@@ -14,6 +15,7 @@ class Application implements GlobalInterface{
                 $default,
                 $appName,
                 $controllerName,
+                $services,
                 $route,
                 $viewConfig,
                 $exception;
@@ -26,6 +28,7 @@ class Application implements GlobalInterface{
         $this->default = $config['default'];
         $this->route = new Route();
         $this->viewConfig = $config['view'];
+        $this->services = $config['services'];
     }
 
     public function load() {
@@ -40,6 +43,7 @@ class Application implements GlobalInterface{
         }
         
         if($this->isAction($controller, $action)){
+            $controller->setServices(new Services($this->services));
             $method = $action.'Action';
             $view = $controller->$method();
             if($view instanceof \FW\MVC\View\ViewModel){

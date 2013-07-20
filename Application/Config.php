@@ -13,5 +13,10 @@ return array(
         'encode' => 'UTF8',
         'defaultTitle' => 'Titulo Padrão',
         'layoutModel' => 'View/Layout.phtml'
+    ),
+    'services' => array(
+        'service1',
+        'service2',
+        'service3'
     )
 );

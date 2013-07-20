@@ -9,8 +9,11 @@ abstract class AbstractController {
     protected $defaultAction = 'index',
               $templatesVariables = array(),
               $controllerName,
-              $templateType = NULL;
+              $templateType = NULL,
+              $services;
+    
     private $get, $post;
+    
     public function indexAction(){
         return new ViewModel(array());
     }
@@ -53,6 +56,17 @@ abstract class AbstractController {
     public function setControllerName($controllerName) {
         $this->controllerName = $controllerName;
     }
+    
+    public function setServices(\FW\MVC\Controller\Services $services){
+        if($services !== NULL){
+            $this->services = $services;
+        }
+    }
+    
+    public function getService($serviceName){
+        return $this->services->get($serviceName);
+    }
+    
 }
 
 ?>

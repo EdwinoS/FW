@@ -6,6 +6,7 @@ interface GlobalInterface {
     const APPROOT = '../Application/';
     const CONTROLLERS_ROOT = '../Application/Controllers/';
     const VIEW_ROOT = '../Application/View/';
+    const SERVICES_ROOT = '../Application/Services/';
 }
 
 ?>

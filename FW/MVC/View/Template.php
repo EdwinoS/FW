@@ -1,6 +1,7 @@
 <?php
 namespace FW\MVC\View;
 use FW\Interfaces\GlobalInterface;
+use FW\Interfaces\ExceptionsInterface;
 use FW\Exceptions\Exceptions;
 
 class Template implements GlobalInterface{
@@ -28,7 +29,7 @@ class Template implements GlobalInterface{
                     include ($this->layoutModel);
                 }
                 else{
-                    $exception = new Exceptions(array('code' => '404-5', 'items' => array(0 => $this->layoutModel)));
+                    $exception = new Exceptions(array('code' => ExceptionsInterface::TEMPLATENOTFOUND, 'items' => array(0 => $this->layoutModel)));
                     $this->view = new ViewModel(array(
                         'code' => $exception->getCode(),
                         'message' => $exception->getMessage()
@@ -48,20 +49,20 @@ class Template implements GlobalInterface{
         switch ($docmentType){
             case 'HTML': 
                 $this->docmentType = '<!DOCTYPE html>'.$this::EOL; 
-                header('Content-type: text/html; charset='.$this->encode);
+                @header('Content-type: text/html; charset='.$this->encode);
                 $this->encode = '<meta http-equiv="Content-Type" content="text/HTML; charset='.$this->encode.'">'.$this::EOL;
             break;
             case 'XML': 
-                header('Content-type: application/xml; charset='.$this->encode);
+                @header('Content-type: application/xml; charset='.$this->encode);
                 echo $this->docmentType = '<?xml version="1.0" encoding="'.$this->encode.'"?>'.$this::EOL;
                 $this->layoutModel = $this->view;
             break;
             case 'JSON': 
-                header('Content-type: application/json; charset='.$this->encode);
+                @header('Content-type: application/json; charset='.$this->encode);
                 $this->layoutModel = $this->view;
             break;
             default :
-                header('Content-type: text/html; charset='.$this->encode);
+                @header('Content-type: text/html; charset='.$this->encode);
                 $this->encode = '<meta http-equiv="Content-Type" content="text/HTML"; charset="'.$this->encode.'">';
                 $this->docmentType = '<!DOCTYPE html>'.$this::EOL;
             break;

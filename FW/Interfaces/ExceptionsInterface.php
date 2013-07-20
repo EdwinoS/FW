@@ -15,11 +15,13 @@ interface ExceptionsInterface extends GlobalInterface{
     //controllers
     const CONTROLLERNOTFOUND = '404-1';
     const ACTIONNOTFOUND = '404-2';
+    const SERVICENOTFOUND = '404-6';
     
     
     //views
     const VIEWNOTFOUND = '404-3';
     const VIEWNOTSETED = '404-4';
+    const TEMPLATENOTFOUND = '404-5';
 }
 
 ?>

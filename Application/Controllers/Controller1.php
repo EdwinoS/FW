@@ -7,6 +7,7 @@ use FW\MVC\View\ViewModel;
 class Controller1 extends AbstractController {
     public function indexAction(){
         $rtn = '<h1>Uma pagina em HTML</h1>';
+        
         return new ViewModel(array('teste' => $rtn));
     }
     public function jsonAction(){

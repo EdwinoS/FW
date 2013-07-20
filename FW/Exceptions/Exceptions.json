@@ -2,12 +2,13 @@
     "400": "Requisição invalida.",
     "403": "Acesso negado.",
     "404": [
-            "Pagina não foi encontrada.",
+            "Pagina não foi encontrada.", 
             "O Controller '%' não foi encontrado ou registrado.",
             "A Action '%' não existe.",
             "Impossível renderizar a página. O arquivo da view não foi encontrado em '%'.",
             "Uma instancia de '%' era esperada, porém não foi retornada pela Action '%' do Controller '%'.",
-            "Impossível renderizar a página. O template não foi encontrado em '%'"
+            "Impossível renderizar a página. O template não foi encontrado em '%'",
+            "O serviço '%'  não foi registrado ou encontrado  em '%'."
     ],
     "500": "Erro interno do servidor."
 }
